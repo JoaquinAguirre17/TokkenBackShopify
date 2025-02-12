@@ -14,7 +14,7 @@ app.use(cors({
 app.get('/api/shopify/products', async (req, res) => {
   try {
     // URL del endpoint de Shopify para obtener productos
-    const shopifyUrl = `https://your-shop-name.myshopify.com/admin/api/2025-01/products.json?ids=632910392921728736`; // Cambia los valores según lo necesario
+    const shopifyUrl = `https://gh007n-wr.myshopify.com/admin/api/products.json?`; // Cambia los valores según lo necesario
 
     // Solicitar los productos desde Shopify
     const response = await axios.get(shopifyUrl, {
