@@ -3,7 +3,7 @@ require('dotenv').config();  // Cargar variables de entorno
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const { getProducts } = require('./controllers/shopifyController.js');  // Asegúrate de que el path sea correcto
+const { getProducts } = require('./shopify-backend/controllers/shopifyController');  // Asegúrate de que el path sea correcto
 
 const app = express();
 const port = process.env.PORT || 5000;
