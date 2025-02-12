@@ -9,22 +9,18 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Datos de ejemplo
-const products = [
-  { id: 1, name: 'Producto 1', price: 100 },
-  { id: 2, name: 'Producto 2', price: 200 },
-];
+
 
 // Endpoint para obtener productos
 app.get('/api/shopify/products', (req, res) => {
   try {
-    // Aquí se deberían obtener los productos reales de la base de datos o API
-    res.json(products);  // Retorna los productos como respuesta
+    res.status(200).json(products);  // Enviando productos con un código de estado 200
   } catch (err) {
     console.error('Error al obtener productos:', err);
     res.status(500).json({ error: 'Hubo un problema al obtener los productos' });
   }
 });
+
 
 // Iniciar servidor
 app.listen(5000, () => {
