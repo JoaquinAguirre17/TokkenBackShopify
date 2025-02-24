@@ -1,8 +1,8 @@
-// micorreo.service.js
 const axios = require('axios');
 require('dotenv').config();
 
 let token = null;
+let tokenExpiration = null; // Variable para almacenar la fecha de expiración del token
 
 // Obtener token de autenticación
 async function authenticate() {
@@ -18,6 +18,7 @@ async function authenticate() {
       }
     );
     token = response.data.token;
+    tokenExpiration = Date.now() + (response.data.expires_in * 1000); // Suponiendo que expires_in está en segundos
     return token;
   } catch (error) {
     throw new Error('Error al autenticar con MiCorreo: ' + error.message);
@@ -26,7 +27,8 @@ async function authenticate() {
 
 // Hacer una solicitud autenticada
 async function authenticatedRequest(endpoint, method = 'GET', data = {}) {
-  if (!token) {
+  // Si el token no existe o ha expirado, obtenemos uno nuevo
+  if (!token || Date.now() > tokenExpiration) {
     await authenticate();
   }
 

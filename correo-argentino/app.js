@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const micorreoRoutes = require('./micorreo/micorreo.routes'); // Ajustá la ruta según tu estructura
+const micorreoRoutes = require('./routes/micorreo.routes'); // Ajustá la ruta según tu estructura
 require('dotenv').config();
 
 // Middleware para parsear JSON

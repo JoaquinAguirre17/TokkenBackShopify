@@ -1,50 +1,92 @@
-// micorreo.service.js
-const axios = require('axios');
-require('dotenv').config();
+// micorreo.routes.js
+const express = require('express');
+const router = express.Router();
+const {
+  registerUser,
+  validateUser,
+  getAgencies,
+  getRates,
+  importShipping,
+} = require('../controller/micorreo.controller')
 
-let token = null;
+// Registro de usuario
+router.post('/register', registerUser);
 
-// Obtener token de autenticación
-async function authenticate() {
-  const credentials = Buffer.from(`${process.env.MICORREO_USER}:${process.env.MICORREO_PASSWORD}`).toString('base64');
+// Validar usuario
+router.post('/validate', validateUser);
+
+// Obtener sucursales por provincia
+router.get('/agencies', getAgencies);
+
+// Cotizar envío
+router.post('/rates', getRates);
+
+// Importar envío
+router.post('/shipping/import', importShipping);
+
+module.exports = router;
+
+// micorreo.controller.js
+const { authenticatedRequest } = require('./micorreo.service');
+
+// Registrar un nuevo usuario
+async function registerUser(req, res) {
   try {
-    const response = await axios.post(
-      `${process.env.MICORREO_BASE_URL}/token`,
-      {},
-      {
-        headers: {
-          Authorization: `Basic ${credentials}`,
-        },
-      }
+    const response = await authenticatedRequest('/register', 'POST', req.body);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+// Validar usuario
+async function validateUser(req, res) {
+  try {
+    const response = await authenticatedRequest('/users/validate', 'POST', req.body);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+// Obtener sucursales por provincia
+async function getAgencies(req, res) {
+  try {
+    const { customerId, provinceCode } = req.query;
+    const response = await authenticatedRequest(
+      `/agencies?customerId=${customerId}&provinceCode=${provinceCode}`,
+      'GET'
     );
-    token = response.data.token;
-    return token;
+    res.status(200).json(response);
   } catch (error) {
-    throw new Error('Error al autenticar con MiCorreo: ' + error.message);
+    res.status(500).json({ message: error.message });
   }
 }
 
-// Hacer una solicitud autenticada
-async function authenticatedRequest(endpoint, method = 'GET', data = {}) {
-  if (!token) {
-    await authenticate();
-  }
-
+// Cotizar envío
+async function getRates(req, res) {
   try {
-    const response = await axios({
-      method,
-      url: `${process.env.MICORREO_BASE_URL}${endpoint}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      data,
-    });
-    return response.data;
+    const response = await authenticatedRequest('/rates', 'POST', req.body);
+    res.status(200).json(response);
   } catch (error) {
-    throw new Error(`Error en la solicitud a MiCorreo: ${error.response?.data?.message || error.message}`);
+    res.status(500).json({ message: error.message });
   }
 }
 
-module.exports = { authenticate, authenticatedRequest };
+// Importar envío
+async function importShipping(req, res) {
+  try {
+    const response = await authenticatedRequest('/shipping/import', 'POST', req.body);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
+module.exports = {
+  registerUser,
+  validateUser,
+  getAgencies,
+  getRates,
+  importShipping,
+};
