@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000;
 
 // Configuración de CORS
 app.use(cors({
-  origin: 'https://tokkencba.com',  // Permitir solo desde el frontendaaa
+  origin: 'https://tokkencba.com',  // Permitir solo desde el frontend
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -31,6 +31,12 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
   });
 }
+
+// Middleware para manejo de errores global
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send({ message: 'Algo salió mal', error: err.message });
+});
 
 // Iniciar el servidor
 app.listen(port, () => {
