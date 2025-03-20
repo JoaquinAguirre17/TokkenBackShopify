@@ -1,4 +1,3 @@
-
 const axios = require('axios');
 
 // Función para obtener productos de Shopify
@@ -11,13 +10,13 @@ const getProducts = async (req, res) => {
         'X-Shopify-Access-Token': process.env.SHOPIFY_ACCESS_TOKEN,
       },
     });
+
     res.status(200).json(response.data);
   } catch (error) {
-    console.error(error.response ? error.response.data : error.message);  // Muestra el error detallado
-    res.status(500).json({ message: 'Error al obtener productos', error: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener productos', error });
   }
 };
-
 
 // Función para obtener los detalles de un producto específico
 const getProductDetails = async (req, res) => {
