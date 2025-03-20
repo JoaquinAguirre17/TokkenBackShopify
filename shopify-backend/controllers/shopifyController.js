@@ -6,7 +6,7 @@ const getProducts = async (req, res) => {
   try {
     const response = await axios({
       method: 'get',
-      url: `https://${process.env.SHOPIFY_STORE_URL}/admin/api/2025-01/products.json?limit=250`,
+      url: `https://${process.env.SHOPIFY_STORE_URL}/admin/api/2025-01/products`,
       headers: {
         'X-Shopify-Access-Token': process.env.SHOPIFY_ACCESS_TOKEN,
       },
