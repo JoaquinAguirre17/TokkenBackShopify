@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000;
 
 // Configuración de CORS
 app.use(cors({
-  origin: 'https://tokkencba.com',  // Permitir solo desde el frontendaaa
+  origin: 'https://tokkencba.com',  // Peermitir solo desde el frontendaaa
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
