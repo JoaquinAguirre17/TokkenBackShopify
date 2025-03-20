@@ -6,19 +6,18 @@ const getProducts = async (req, res) => {
   try {
     const response = await axios({
       method: 'get',
-      url: `https://${process.env.SHOPIFY_STORE_URL}/admin/api/2025-01/products.jsno`,
+      url: `https://${process.env.SHOPIFY_STORE_URL}/admin/api/2025-01/products.json?limit=250`,
       headers: {
         'X-Shopify-Access-Token': process.env.SHOPIFY_ACCESS_TOKEN,
       },
     });
-
-
     res.status(200).json(response.data);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error al obtener productos', error });
+    console.error(error.response ? error.response.data : error.message);  // Muestra el error detallado
+    res.status(500).json({ message: 'Error al obtener productos', error: error.message });
   }
 };
+
 
 // Función para obtener los detalles de un producto específico
 const getProductDetails = async (req, res) => {
