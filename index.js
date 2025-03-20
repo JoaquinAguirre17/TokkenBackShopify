@@ -21,16 +21,7 @@ app.use(express.json());
 app.get('/api/shopify/products', getProducts);
 app.get('/api/shopify/products/:id', getProductDetails);
 
-// **CONFIGURACIÓN PARA PRODUCCIÓN**: Servir el frontend en producción
-if (process.env.NODE_ENV === 'production') {
-  // Servir archivos estáticos del frontend (React)
-  app.use(express.static(path.join(__dirname, 'build')));
 
-  // Cualquier ruta que no sea API debe redirigir a 'index.html' de React
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-  });
-}
 
 // Middleware para manejo de errores global
 app.use((err, req, res, next) => {
