@@ -1,4 +1,4 @@
-require('dotenv').config();  // Asegúrate de colocar esto al inicio de tu archivo
+require('dotenv').config();  // Asegúrate de colocar estdo al inicio de tu archivo
 const express = require('express');
 const cors = require('cors');
 const path = require('path'); // Importamos 'path' para manejar rutas
